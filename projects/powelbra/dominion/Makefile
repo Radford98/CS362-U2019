@@ -46,6 +46,8 @@ randomtestresults: randomtestcard1.c randomtestcard2.c randomtestcard3.c dominio
 	gcc -o randomtestcard3 -g randomtestcard3.c dominion.o rngs.o cardEffect.o $(CFLAGS)
 	./randomtestcard3 >> randomtestresults.out
 	gcov -b -f -c randomtestcard3.c >> randomtestresults.out
+	echo "Coverage of card functions:" >> randomtestresults.out
+	gcov -b -f -c cardEffect.c >> randomtestresults.out
 
 player: player.c interface.o dominion.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o cardEffect.o $(CFLAGS)
