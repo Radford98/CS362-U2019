@@ -9,7 +9,7 @@ char inputChar()
     // TODO: rewrite this function
 	// Create a random character from space (Starting at ASCII 32, ' ') to punctuation (ASCII 126, ~).
 	// Excludes 'command' characters like carriage return or delete.
-    return  (rand() % (127 - 33 + 1)) + 32;
+    return  (rand() % (126 - 32 + 1)) + 32;
 }
 
 char *inputString()
