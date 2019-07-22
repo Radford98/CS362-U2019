@@ -38,7 +38,7 @@ int main() {
 		post.numBuys = (rand() % INT_MAX) - 1;	// Must be 1 less than the max so Baron can add 1 to it
 		post.supplyCount[estate] = rand() % 3;
 		post.discardCount[post.whoseTurn] = (rand() % MAX_DECK) - 1;
-		post.handCount[post.whoseTurn] = rand() % MAX_HAND;
+		post.handCount[post.whoseTurn] = (rand() % MAX_HAND) + 1;	// Handcount must be at least 1 to be the "baron" (handPos for discardCard in Baron)
 		post.playedCardCount = (rand() % MAX_HAND) - 1;
 
 		// Copy post to pre
