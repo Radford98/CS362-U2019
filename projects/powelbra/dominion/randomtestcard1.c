@@ -25,6 +25,7 @@ int main() {
 	srand(time(0));
 	struct gameState pre, post;
 	int i, j, preBonus, postBonus, handPos, choice, isEstate;
+	int failCount = 0;
 
 	for (i = 0; i < 2000; i++) {
 		// Generate a random game state with bytes from 0-255
@@ -108,11 +109,12 @@ int main() {
 		}
 		if (memcmp(&pre, &post, sizeof(struct gameState)) != 0) {
 			printf("Test %d: gameStates do not match.\tChoice: %d\thandPos: %d\tisEstate: %d\n", i, choice, handPos, isEstate);
+			failCount++;
 		}
 
 	}
 
-
+	printf("Total times gameStates didn't match: %d\n", failCount);
 
 
 	return 0;
