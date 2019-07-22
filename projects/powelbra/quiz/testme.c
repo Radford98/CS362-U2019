@@ -54,7 +54,7 @@ void testme()
        && s[4] == 't' && s[5] == '\0'
        && state == 9)
     {
-      printf("error ");
+      printf("error\n");
 	  free(s);
       exit(200);
     }
