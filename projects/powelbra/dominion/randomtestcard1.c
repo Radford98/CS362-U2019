@@ -34,7 +34,7 @@ int main() {
 
 		// Set important variables to reasonable values
 		post.numPlayers = (rand() % 3) + 2;
-		post.whoseTurn = (rand() % 3) + 2;
+		post.whoseTurn = (rand() % post.numPlayers);	// Random player from 0 to numPlayers-1
 		post.numBuys = (rand() % INT_MAX) - 1;	// Must be 1 less than the max so Baron can add 1 to it
 		post.supplyCount[estate] = rand() % 3;
 		post.discardCount[post.whoseTurn] = (rand() % MAX_DECK) - 1;
@@ -71,7 +71,7 @@ int main() {
 			// If there is an estate to discard
 			if (isEstate) {
 				preBonus += 4;
-				pre.discard[pre.whoseTurn][pre.discardCount[pre.whoseTurn] = estate;
+				pre.discard[pre.whoseTurn][pre.discardCount[pre.whoseTurn]] = estate;
 				pre.discardCount[pre.whoseTurn]++;
 				// Shift cards in hand over
 				for (; k < pre.handCount[pre.whoseTurn]; k++) {
