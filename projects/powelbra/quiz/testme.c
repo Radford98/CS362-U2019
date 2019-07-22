@@ -16,14 +16,14 @@ char *inputString()
 {
     // TODO: rewrite this function
 	// Testing strings of length 6
-	char string[6];
+	char *string = (char*)malloc(6);
 	// Assign a random string of lowercase letters
 	int i;
 	for (i = 0; i < 5; i++) {
 		string[i] = (rand() % (122 - 97 + 1)) + 97;
 	}
 	string[5] = '\0';	// Ensure we're working with a null-terminated string.
-    return "";
+    return string;
 }
 
 void testme()
@@ -55,8 +55,10 @@ void testme()
        && state == 9)
     {
       printf("error ");
+	  free(s);
       exit(200);
     }
+	free(s);
   }
 }
 
