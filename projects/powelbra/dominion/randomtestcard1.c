@@ -10,6 +10,7 @@ cardtest1: cardtest1.c dominion.o rngs.o cardEffect.o
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
+#include "cardEffect.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,11 +20,12 @@ cardtest1: cardtest1.c dominion.o rngs.o cardEffect.o
 #define TESTCARD "Baron"
 
 int main() {
+	printf("---------- Randomly Testing: %s ----------\n", TESTCARD);
+
 	srand(time(0));
 	struct gameState pre, post;
+	int i, j, k, preBonus, postBonus, handPos, choice, isEstate;
 
-
-	int i, j, bonus, handPos;
 	for (i = 0; i < 2000; i++) {
 		// Generate a random game state with bytes from 0-255
 		for (j = 0; j < sizeof(struct gameState); j++) {
@@ -38,31 +40,73 @@ int main() {
 		post.discardCount[post.whoseTurn] = (rand() % MAX_DECK) - 1;
 		post.handCount[post.whoseTurn] = rand() % MAX_HAND;
 		post.playedCardCount = (rand() % MAX_HAND) - 1;
-		bonus = (rand() % INT_MAX) - 4;
-		handPos = rand() % post.handCount[post.whoseTurn];
 
 		// Copy post to pre
 		memcpy(&pre, &post, sizeof(struct gameState));
 
+		// Randomize inputs for Baron
+		postBonus = preBonus = (rand() % INT_MAX) - 4;
+		handPos = rand() % post.handCount[post.whoseTurn];
+		choice = (rand() % 3) - 1;	// Test choices of -1, 0, or 1
 
+		// Test Baron
+		playBaron(choice, &post, handPos, &postBonus);
+		
+		// Baron will always have +1 buy and the card should always be discarded
+		pre.numBuys++;
+		discardCard(handPos, pre.whoseTurn, &pre, 0);
 
-	}
+		// Other post conditions of Baron depends on choice and if there's an estate
+		// Store that number for use in hand shifting later
+		isEstate = 0;
+		for (k = 0; k < pre.handCount[pre.whoseTurn]; k++) {
+			if (pre.hand[pre.whoseTurn][k] == estate) {
+				isEstate = k;
+				break;
+			}
+		}
 
+		// Choice > 0: Discard an estate
+		if (choice > 0) {
+			// If there is an estate to discard
+			if (isEstate) {
+				preBonus += 4;
+				pre.discard[pre.whoseTurn][pre.discardCount[pre.whoseTurn] = estate;
+				pre.discardCount[pre.whoseTurn]++;
+				// Shift cards in hand over
+				for (; k < pre.handCount[pre.whoseTurn]; k++) {
+					pre.hand[pre.whoseTurn][k] = pre.hand[pre.whoseTurn][k + 1];
+				}
+				pre.hand[pre.whoseTurn][pre.handCount[pre.whoseTurn]] = -1;
+				pre.handCount[pre.whoseTurn]--;
+			}
+			// No estate to discard
+			else {
+				// If there is one in the supply
+				if (pre.supplyCount[estate] > 0) {
+					pre.discard[pre.whoseTurn][pre.discardCount[pre.whoseTurn]] = estate;
+					pre.discardCount[pre.whoseTurn]++;
+					pre.supplyCount[estate]--;
+				}
+			}
+		}
+		// Choice < 1: Gain an estate
+		else {
+			// If there is one in the supply
+			if (pre.supplyCount[estate] > 0) {
+				pre.discard[pre.whoseTurn][pre.discardCount[pre.whoseTurn]] = estate;
+				pre.discardCount[pre.whoseTurn]++;
+				pre.supplyCount[estate]--;
+			}
+		}
 
+		if (preBonus != postBonus) {
+			printf("Test %d: Bonus is %d, expected %d\n", i, postBonus, preBonus);
+		}
+		if (memcmp(&pre, &post, sizeof(struct gameState)) != 0) {
+			printf("Test %d: gameStates do not match.\tChoice: %d\thandPos: %d\tisEstate: %d\n", i, choice, handPos, isEstate);
+		}
 
-	int numPlayers, i, j;
-	int k[10] = { baron, minion, ambassador, tribute, mine, gardens, village, smithy, adventurer, great_hall };
-	int seed = 100;
-	struct gameState G[5];	// Array of gamestructs for different player counts
-	char cardName[MAX_STRING_LENGTH];
-
-	printf("---------- Randomly Testing: %s ----------\n", TESTCARD);
-
-	// ----- Test 1: Number of Players -----
-	printf("\n----- TEST 1: Number of players\nShould return -1 on <2 or >4 players, 0 otherwise -----\n");
-	// Initialize the five gameStates with different player counts, different seeds
-	for (numPlayers = 1; numPlayers <= 5; numPlayers++) {
-		printf("%d players: %d\n", numPlayers, initializeGame(numPlayers, k, seed*numPlayers, &G[numPlayers - 1]));
 	}
 
 
