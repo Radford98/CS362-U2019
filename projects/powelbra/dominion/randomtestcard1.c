@@ -48,7 +48,7 @@ int main() {
 		memcpy(&pre, &post, sizeof(struct gameState));
 
 		// Randomize inputs for Baron
-		postBonus = preBonus = (rand() % INT_MAX) - 4;
+		postBonus = preBonus = (rand() % 11);
 		handPos = rand() % post.handCount[post.whoseTurn];
 		choice = (rand() % 3) - 1;	// Test choices of -1, 0, or 1
 
@@ -61,7 +61,7 @@ int main() {
 
 		// Other post conditions of Baron depends on choice and if there's an estate
 		// Store that number for use in hand shifting later
-		isEstate = 0;
+		isEstate = -1;
 		for (j = 0; j < pre.handCount[pre.whoseTurn]; j++) {
 			if (pre.hand[pre.whoseTurn][j] == estate) {
 				isEstate = j;
@@ -72,7 +72,7 @@ int main() {
 		// Choice > 0: Discard an estate
 		if (choice > 0) {
 			// If there is an estate to discard
-			if (isEstate) {
+			if (isEstate >= 0) {
 				preBonus += 4;
 				pre.discard[pre.whoseTurn][pre.discardCount[pre.whoseTurn]] = estate;
 				pre.discardCount[pre.whoseTurn]++;
