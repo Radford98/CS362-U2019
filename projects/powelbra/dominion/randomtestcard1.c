@@ -27,7 +27,7 @@ int main() {
 	int i, j, preBonus, postBonus, handPos, choice, isEstate;
 	int failCount = 0;
 
-	for (i = 0; i < 2000; i++) {
+	for (i = 0; i < 5000; i++) {
 		// Generate a random game state with bytes from 0-255
 		for (j = 0; j < sizeof(struct gameState); j++) {
 			((char*)&post)[j] = rand() % 256;
@@ -42,7 +42,7 @@ int main() {
 		post.handCount[post.whoseTurn] = (rand() % MAX_HAND) + 1;	// Handcount must be at least 1 to be the "baron" (handPos for discardCard in Baron)
 		post.playedCardCount = (rand() % MAX_HAND) - 1;
 		for (j = 0; j < post.handCount[post.whoseTurn]; j++) {
-			post.hand[post.whoseTurn][j] = rand() % 27;		// Randomize card in hand to valid kingdom cards
+			post.hand[post.whoseTurn][j] = rand() % 100;		// Randomize card in hand to valid kingdom cards
 		}
 
 		// Copy post to pre
@@ -114,7 +114,7 @@ int main() {
 
 	}
 
-	printf("Total times gameStates didn't match: %d\n", failCount);
+	printf("Total times gameStates didn't match: %d\nCheck gcov for patterns.\n", failCount);
 
 
 	return 0;
