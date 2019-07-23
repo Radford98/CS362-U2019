@@ -3,8 +3,8 @@ Author: Brad Powell
 Random test for Baron.
 
 Include in your makefile (cardEffect only if you have a separate file for card effects)
-cardtest1: cardtest1.c dominion.o rngs.o cardEffect.o
-	gcc -o cardtest1 -g cardtest1.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+cardtest1: randomtestcard1.c dominion.o rngs.o cardEffect.o
+	gcc -o randomtestcard1 -g randomtestcard1.c dominion.o rngs.o cardEffect.o $(CFLAGS)
 */
 
 #include "dominion.h"
@@ -34,9 +34,9 @@ int main() {
 		}
 
 		// Set important variables to reasonable values
-		post.numPlayers = (rand() % 3) + 2;
+		post.numPlayers = (rand() % 3) + 2;				// 2-4 players
 		post.whoseTurn = (rand() % post.numPlayers);	// Random player from 0 to numPlayers-1
-		post.numBuys = (rand() % INT_MAX) - 1;	// Must be 1 less than the max so Baron can add 1 to it
+		post.numBuys = (rand() % INT_MAX) - 1;			// Must be 1 less than the max so Baron can add 1 to it
 		post.supplyCount[estate] = rand() % 3;
 		post.discardCount[post.whoseTurn] = (rand() % MAX_DECK) - 1;
 		post.handCount[post.whoseTurn] = (rand() % MAX_HAND) + 1;	// Handcount must be at least 1 to be the "baron" (handPos for discardCard in Baron)
