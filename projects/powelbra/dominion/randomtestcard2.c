@@ -140,7 +140,61 @@ int main() {
 			}
 		}
 
+		// --------------------------- Choice1 < 1 && Choice2 < 1: Nothing happens ---------------
 
+		// Print results
+		if (preBonus != postBonus) {
+			printf("Test %d: Bonus is %d, expected %d\n", i, postBonus, preBonus);
+			allGood = 0;
+		}
+		if (memcmp(&pre, &post, sizeof(struct gameState)) != 0) {
+			printf("Test %d: gameStates do not match.\tChoice1: %d\tchoice2: %d\n", i, choice1, choice2);
+			if (pre.numActions != post.numActions) {
+				printf("Expected numActions: %d\tActual: %d\n", pre.numActions, post.numActions);
+			}
+			if (pre.playedCardCount != post.playedCardCount) {
+				printf("Expected playedCardCount: %d\tActual: %d\n", pre.playedCardCount, post.playedCardCount);
+			}
+			if (pre.playedCards[pre.playedCardCount - 1] != post.playedCards[pre.playedCardCount - 1]) {
+				printf("Expected playedCard: %d\tActual: %d\n", pre.playedCards[pre.playedCardCount - 1], post.playedCards[pre.playedCardCount - 1]);
+			}
+			for (j = 0; j < pre.numPlayers; j++) {
+				if (j == cp) {
+					printf("Current Player (%d):\n", j);
+				}
+				else {
+					printf("Player %d\n", j);
+				}
+				int tempGood = 1;
+				if (pre.discardCount[j] != post.discardCount[j]) {
+					printf("Expected discardCount: %d\tActual: %d\n", pre.discardCount[j], post.discardCount[j]);
+					tempGood = 0;
+				}
+				if (pre.handCount[j] != post.handCount[j]) {
+					printf("Expected handCount: %d\tActual: %d\n", pre.handCount[j], post.handCount[j]);
+					tempGood = 0;
+				}
+				if (pre.deckCount[j] != post.deckCount[j]) {
+					printf("Expected deckCount: %d\tActual: %d\n", pre.deckCount[j], post.deckCount[j]);
+					tempGood = 0;
+				}
+				if (tempGood) {
+					printf("This player ok\n");
+				}
+			}
+			failCount++;
+			allGood = 0;
+		}
+
+		// If no errors, print success message.
+		if (allGood) {
+			printf("All tests passed.\n");
+		}
+		// If any gameState failures, print number of failures
+		else if (failCount > 0) {
+			printf("Total times gameStates didn't match: %d\nCheck gcov for patterns.\n", failCount);
+		}
+		// No need for default else since the bonus failures are already reported above.
 
 	}
 	return 0;
