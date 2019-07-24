@@ -77,52 +77,69 @@ int main() {
 		}
 		// --------------------------- Choice1 < 1 && Choice2 > 0: Redraw ------------------------
 		else if (choice1 < 1 && choice2 > 0) {
-			// If there were at least 4 cards to draw, draw them!
-			if (pre.deckCount[cp] >= 4) {
-				// Discard cards from last to first
-				while (pre.handCount[cp] > 0) {
-					pre.handCount[cp]--;
-					pre.discard[cp][pre.discardCount[c]] = pre.hand[cp][pre.handCount[cp]];
-					pre.discardCount++;
-					pre.hand[cp][pre.handCount[cp]] = -1;
-				}
-				// Draw cards
-				for (j = 0; j < 4; j++) {
-					pre.deckCount[cp]--;
-					pre.hand[cp][j] = pre.deck[cp][pre.deckCount[cp]];
-					pre.handCount[cp]++;
-				}
-			}
-			// If there aren't 4 cards to draw, we need to trust the drawCard function in Minion
-			// since any sort of shuffle here will come up with a different number due to random()
-			else {
-				// Calculate what the new handsize will be, depending on the size of the deck and discard and hand before the shuffle
-				int newHand,
-					totalDeck = pre.deckCount[cp] + pre.discardCount[cp] + pre.handCount[cp];
-				if (totalDeck < 4) {
-					newHand = totalDeck;
-				}
-				else {
-					newHand = 4;
-				}
-				// Need to overwrite all the memory of pre's deck, discard, and hand with post's
-				// For discard and hand, we need to use pre's numbers so there aren't 'loose cards' beyond the boundary of what will be the new hand/discardCount.
-				memcpy(pre.discard[cp], post.discard[cp], sizeof(int)*pre.discardCount[cp]);
-				memcpy(pre.hand[cp], post.hand[cp], sizeof(int) * pre.handCount[cp]);
-
-				// For the deck, we need to use the new deckCount so all of the 'cards' are properly transferred
-				// deckCount is 1) previous deck, 2) previous discard, and 3) previous hand minus minion (taken care of above), minus number of cards drawn (newHand)
-				// However, after the shuffle there are totalDeck cards before newHand cards are drawn and we want to make sure those blocks of memory are the same.
-				memcpy(pre.deck[cp], post.deck[cp], sizeof(int)*totalDeck);
-
-				// Discard will always be empty after a shuffle and handCount will be newHand as calculated above
-				pre.deckCount[cp] = totalDeck - newHand;
-				pre.discardCount[cp] = 0;
-				pre.handCount[cp] = newHand;
-			}
-
 			
+
+			// Opponents discard their hands and draw new cards on 4 or higher
+			int redraw;		// bool to trigger rewdraw or not
+			for (j = 0; j < pre.numPlayers; j++) {
+				// Current player always redraws their hand
+				if (j == cp) {
+					redraw = 1;
+				}
+				// Opponents only redraw if they have at least 5 cards
+				else if (pre.handCount[j] >= 5) {
+					rewdraw = 1;
+				}
+
+				// If the j-th player needs to redraw their hand:
+				if (redraw) {
+					// If there were at least 4 cards to draw, draw them!
+					if (pre.deckCount[j] >= 4) {
+						// Discard cards from last to first
+						while (pre.handCount[j] > 0) {
+							pre.handCount[j]--;
+							pre.discard[j][pre.discardCount[c]] = pre.hand[j][pre.handCount[j]];
+							pre.discardCount++;
+							pre.hand[j][pre.handCount[j]] = -1;
+						}
+						// Draw cards
+						for (j = 0; j < 4; j++) {
+							pre.deckCount[j]--;
+							pre.hand[j][j] = pre.deck[j][pre.deckCount[j]];
+							pre.handCount[j]++;
+						}
+					}
+					// If there aren't 4 cards to draw, we need to trust the drawCard function in Minion
+					// since any sort of shuffle here will come up with a different number due to random()
+					else {
+						// Calculate what the new handsize will be, depending on the size of the deck and discard and hand before the shuffle
+						int newHand,
+							totalDeck = pre.deckCount[j] + pre.discardCount[j] + pre.handCount[j];
+						if (totalDeck < 4) {
+							newHand = totalDeck;
+						}
+						else {
+							newHand = 4;
+						}
+						// Need to overwrite all the memory of pre's deck, discard, and hand with post's
+						// For discard and hand, we need to use pre's numbers so there aren't 'loose cards' beyond the boundary of what will be the new hand/discardCount.
+						memcpy(pre.discard[j], post.discard[j], sizeof(int)*pre.discardCount[j]);
+						memcpy(pre.hand[j], post.hand[j], sizeof(int) * pre.handCount[j]);
+
+						// For the deck, we need to use the new deckCount so all of the 'cards' are properly transferred
+						// deckCount is 1) previous deck, 2) previous discard, and 3) previous hand minus minion (taken care of above), minus number of cards drawn (newHand)
+						// However, after the shuffle there are totalDeck cards before newHand cards are drawn and we want to make sure those blocks of memory are the same.
+						memcpy(pre.deck[j], post.deck[j], sizeof(int)*totalDeck);
+
+						// Discard will always be empty after a shuffle and handCount will be newHand as calculated above
+						pre.deckCount[j] = totalDeck - newHand;
+						pre.discardCount[j] = 0;
+						pre.handCount[j] = newHand;
+					}
+				}
+			}
 		}
+
 
 
 	}
