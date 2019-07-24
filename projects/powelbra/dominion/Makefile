@@ -35,6 +35,12 @@ runtests: testDrawCard
 randomtestcard1: randomtestcard1.c dominion.o rngs.o cardEffect.o
 	gcc -o randomtestcard1 -g randomtestcard1.c dominion.o rngs.o cardEffect.o $(CFLAGS)
 
+randomtestcard2: randomtestcard2.c dominion.o rngs.o cardEffect.o
+	gcc -o randomtestcard2 -g randomtestcard2.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+
+randomtestcard3: randomtestcard3.c dominion.o rngs.o cardEffect.o
+	gcc -o randomtestcard3 -g randomtestcard3.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+
 randomtestresults: randomtestcard1.c randomtestcard2.c randomtestcard3.c dominion.o rngs.o cardEffect.o
 	echo "Running random card tests" > randomtestresults.out
 	echo "randomtestcard1.c:" >> randomtestresults.out
