@@ -25,7 +25,8 @@ int main() {
 	srand(time(0));
 	struct gameState pre, post;
 	int i, j, preBonus, postBonus, handPos, choice, isEstate;
-	int failCount = 0;
+	int failCount = 0,
+		allGood = 1;
 
 	for (i = 0; i < 5000; i++) {
 		// Generate a random game state with bytes from 0-255
@@ -106,15 +107,26 @@ int main() {
 
 		if (preBonus != postBonus) {
 			printf("Test %d: Bonus is %d, expected %d\n", i, postBonus, preBonus);
+			allGood = 0;
 		}
 		if (memcmp(&pre, &post, sizeof(struct gameState)) != 0) {
 			printf("Test %d: gameStates do not match.\tChoice: %d\thandPos: %d\tisEstate: %d\n", i, choice, handPos, isEstate);
 			failCount++;
+			allGood = 0;
 		}
 
 	}
 
-	printf("Total times gameStates didn't match: %d\nCheck gcov for patterns.\n", failCount);
+	// If no errors, print success message.
+	if (allGood) {
+		printf("All tests passed.\n");
+	}
+	// If any gameState failures, print number of failures
+	else if (failCount > 0) {
+		printf("Total times gameStates didn't match: %d\nCheck gcov for patterns.\n", failCount);
+	}
+	// No need for default else since the bonus failures are already reported above.
+	
 
 
 	return 0;
