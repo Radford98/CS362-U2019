@@ -28,7 +28,7 @@ int main() {
 	int failCount = 0,
 		allGood = 1;
 
-	for (i = 0; i < 5000; i++) {
+	for (i = 1; i <= 5000; i++) {
 		// Generate a random game state with bytes from 0-255
 		for (j = 0; j < sizeof(struct gameState); j++) {
 			((char*)&post)[j] = rand() % 256;

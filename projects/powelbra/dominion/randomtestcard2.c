@@ -28,7 +28,7 @@ int main() {
 	int failCount = 0,
 		allGood = 1;
 
-	for (i = 0; i < 5000; i++) {
+	for (i = 1; i <= 5000; i++) {
 		// Generate a random game state with bytes from 0-255
 		for (j = 0; j < sizeof(struct gameState); j++) {
 			((char*)&post)[j] = rand() % 256;
@@ -37,14 +37,15 @@ int main() {
 		// Set important variables to reasonable values
 		post.numPlayers = (rand() % 3) + 2;					// 2-4 players
 		cp = post.whoseTurn = (rand() % post.numPlayers);	// Set current player (cp) to random player from 0 to numPlayers-1
-		post.numActions = (rand() % INT_MAX) - 1;			// Must be 1 less than the max so Minion can add 1 to it
-		post.playedCardCount = (rand() % MAX_HAND) - 1;
+		post.numActions = (rand() % 100);					
+		post.playedCardCount = (rand() % 100);
 
 		// Set up each player with reasonable numbers
+		// For a redraw, the hand, discard, and deck all get added together so combined they should never exceed MAX_DECK/HAND
 		for (j = 0; j < post.numPlayers; j++) {
-			post.discardCount[j] = (rand() % MAX_DECK) - 1;
 			post.handCount[j] = (rand() % MAX_HAND);
-			post.deckCount[j] = (rand() % MAX_DECK) - 1;
+			post.discardCount[j] = (rand() % (MAX_DECK-post.handCount[j]));
+			post.deckCount[j] = (rand() % (MAX_DECK-post.handCount[j]-post.discardCount[j]));
 		}
 
 		// Handcount must be at least 1 to be the "minion" (handPos for discardCard in function)
@@ -154,9 +155,6 @@ int main() {
 			}
 			if (pre.playedCardCount != post.playedCardCount) {
 				printf("Expected playedCardCount: %d\tActual: %d\n", pre.playedCardCount, post.playedCardCount);
-			}
-			if (pre.playedCards[pre.playedCardCount - 1] != post.playedCards[pre.playedCardCount - 1]) {
-				printf("Expected playedCard: %d\tActual: %d\n", pre.playedCards[pre.playedCardCount - 1], post.playedCards[pre.playedCardCount - 1]);
 			}
 			for (j = 0; j < pre.numPlayers; j++) {
 				if (j == cp) {
