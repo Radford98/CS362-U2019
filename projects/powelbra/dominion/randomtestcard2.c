@@ -25,7 +25,8 @@ int main() {
 	srand(time(0));
 	struct gameState pre, post;
 	int i, j, preBonus, postBonus, handPos, choice1, choice2, cp;
-	int failCount = 0;
+	int failCount = 0,
+		allGood = 1;
 
 	for (i = 0; i < 5000; i++) {
 		// Generate a random game state with bytes from 0-255
@@ -70,10 +71,11 @@ int main() {
 		pre.numActions++;
 		discardCard(handPos, cp, &pre, 0);
 
-		// Choice1 > 0: Gain two coins
+		//  --------------------------- Choice1 > 0: Gain two coins -------------------------------
 		if (choice1 > 0) {
 			preBonus += 2;
 		}
+		// --------------------------- Choice1 < 1 && Choice2 > 0: Redraw ------------------------
 		else if (choice1 < 1 && choice2 > 0) {
 			// If there were at least 4 cards to draw, draw them!
 			if (pre.deckCount[cp] >= 4) {
@@ -117,9 +119,9 @@ int main() {
 				pre.deckCount[cp] = totalDeck - newHand;
 				pre.discardCount[cp] = 0;
 				pre.handCount[cp] = newHand;
-
 			}
 
+			
 		}
 
 
