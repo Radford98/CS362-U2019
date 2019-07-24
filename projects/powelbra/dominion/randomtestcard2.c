@@ -24,7 +24,7 @@ int main() {
 
 	srand(time(0));
 	struct gameState pre, post;
-	int i, j, preBonus, postBonus, handPos, choice1, choice2, cp;
+	int i, j, k, preBonus, postBonus, handPos, choice1, choice2, cp;
 	int failCount = 0,
 		allGood = 1;
 
@@ -88,7 +88,7 @@ int main() {
 				}
 				// Opponents only redraw if they have at least 5 cards
 				else if (pre.handCount[j] >= 5) {
-					rewdraw = 1;
+					redraw = 1;
 				}
 
 				// If the j-th player needs to redraw their hand:
@@ -98,14 +98,14 @@ int main() {
 						// Discard cards from last to first
 						while (pre.handCount[j] > 0) {
 							pre.handCount[j]--;
-							pre.discard[j][pre.discardCount[c]] = pre.hand[j][pre.handCount[j]];
-							pre.discardCount++;
+							pre.discard[j][pre.discardCount[j]] = pre.hand[j][pre.handCount[j]];
+							pre.discardCount[j]++;
 							pre.hand[j][pre.handCount[j]] = -1;
 						}
 						// Draw cards
-						for (j = 0; j < 4; j++) {
+						for (k = 0; k < 4; k++) {
 							pre.deckCount[j]--;
-							pre.hand[j][j] = pre.deck[j][pre.deckCount[j]];
+							pre.hand[j][k] = pre.deck[j][pre.deckCount[j]];
 							pre.handCount[j]++;
 						}
 					}
