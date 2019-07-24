@@ -23,7 +23,7 @@ int main() {
 
 	srand(time(0));
 	struct gameState pre, post;
-	int i, j, k, preBonus, postBonus, handPos, cp, np, trib1, trib2, action, treasure, victory;
+	int i, j, k, preBonus, postBonus, handPos, cp, np, trib[2], action, treasure, victory;
 	int failCount = 0,
 		allGood = 1;
 
@@ -83,91 +83,116 @@ int main() {
 
 		// Option 1: Next player's deck has 2+ cards
 		if (pre.deckCount[np] >= 2) {
-			// Store the tribute cards, mostly for error reporting later.
-			trib1 = pre.deck[np][pre.deckCount[np] - 1];
-			trib2 = pre.deck[np][pre.deckCount[np] - 2];
+			// Store the tribute cards
+			trib[0] = pre.deck[np][pre.deckCount[np] - 1];
+			trib[1] = pre.deck[np][pre.deckCount[np] - 2];
 
-			// If the cards are the same, only check one card
-			// j is set to 1 or 2 to look at the appropriate top card of the next player's deck
-			if (trib1 == trib2) {
-				j = 2;
+			// Discard top 2 cards of opponent's deck
+			for (j = 0; j < 2; j++) {
+				pre.deckCount[np]--;
+				pre.discard[np][pre.discardCount[np]] = pre.deck[np][pre.deckCount[np]];
+				pre.discardCount[np]++;
+			}
+
+		}
+		// Option 2: Next player's deck has < 2 cards, but enough in discard, a shuffle is needed for Tribute
+		else if (pre.deckCount[np] < 2 && pre.deckCount[np] + pre.discardCount[np] >= 2) {
+			// If there is 1 card in the deck, store it in trib[0]
+			if (pre.deckCount[np] == 1) {
+				trib[0] = pre.deck[np][pre.deckCount[np] - 1];
 			}
 			else {
-				j = 1;
+				trib[0] = 0;
 			}
 
-			// Use j's value from above - run either once or twice
-			for (; j < 3; j++) {
-				// If top card is a victory card
-				if ((pre.deck[np][pre.deckCount[np] - j] >= 0 && pre.deck[np][pre.deckCount[np] - j] <= 3)
-					|| pre.deck[np][pre.deckCount[np] - j] == great_hall
-					|| pre.deck[np][pre.deckCount[np] - j] == gardens) {
-					victory++;
-				}
-				// If treasure card
-				if (pre.deck[np][pre.deckCount[np] - j] >= 4 && pre.deck[np][pre.deckCount[np] - j] <= 6) {
-					treasure++;
-				}
-				// If an action card
-				if ((pre.deck[np][pre.deckCount[np] - j] >= 7)
-					&& pre.deck[np][pre.deckCount[np] - j] != gardens) {
-					action++;
+			// If trib[0] was pulled, make sure it matches the first card in the discard
+			if (trib[0]) {
+				if (trib[0] != post.discard[np][0]) {
+					printf("Test %d: First tribute doesn't match first discard.\n", i);
 				}
 			}
 
-			// Update actions and coins: 2 actions/coins for each revealed card of the appropriate type
-			pre.numActions += 2 * action;
-			preBonus += 2 * treasure;
-
-			// Draw cards if necessary
-			if (victory) {
-				victory *= 2;	// Update victory to the number of cards that need to be drawn
-				// Enough cards without a shuffle
-				if (pre.deckCount[cp] > = victory) {
-					// Draw cards
-					for (j = 0; j < victory; j++) {
-						pre.deckCount[cp]--;
-						pre.hand[cp][j] = pre.deck[cp][pre.deckCount[cp]];
-						pre.handCount[cp]++;
-					}
-				}
-				// 'Shuffle' first, trusting drawCard
-				else {
-					// Calculate what the new handsize will be, depending on the size of the deck and discard before the shuffle
-					int newHand,
-						totalDeck = pre.deckCount[cp] + pre.discardCount[cp];
-					if (totalDeck < victory) {
-						newHand = totalDeck;
-					}
-					else {
-						newHand = victory;
-					}
-
-					// Need to overwrite all the memory of pre's deck, discard, and hand with post's
-					// We need to cover all of pre's discard (since it will be bigger than post's)
-					// and all of post's hand (since it will be bigger than pre's)
-					// and all pre's discard and deck combined (cards before the draw)
-					memcpy(pre.discard[cp], post.discard[cp], sizeof(int)*pre.discardCount[cp]);
-					memcpy(pre.hand[cp], post.hand[cp], sizeof(int) * post.handCount[cp]);
-					memcpy(pre.deck[cp], post.deck[cp], sizeof(int)*totalDeck);
-
-					pre.deckCount[cp] = totalDeck - newHand;
-					pre.discardCount[cp] = 0;
-					pre.handCount[cp] = newHand;
-
-
-				}
-			}
+			// In this scenario, the next player's discard should always be the 2 cards discarded for tribute.
+			trib[0] = post.discard[np][0];
+			trib[1] = post.discard[np][1];
 			
 
 		}
 
 
 
+		/*********************** Collect Tribute *******************************/
+		// Regardless of what happens above with the next player's state, the current player will always be
+		// updated based on what the tribute cards are.
 
+		// If the cards are the same, only check one card
+		if (trib[0] == trib[1]) {
+			j = 1;
+		}
+		else {
+			j = 0;
+		}
 
+		// Use j's value from above - run either once or twice
+		for (; j < 2; j++) {
+			// If Tribute is a victory card
+			if ((trib[j] >= 0 && trib[j] <= 3)
+				|| trib[j] == great_hall
+				|| trib[j] == gardens) {
+				victory++;
+			}
+			// If treasure card
+			if (trib[j] >= 4 && trib[j] <= 6) {
+				treasure++;
+			}
+			// If an action card
+			if ((trib[j] >= 7)
+				&& trib[j] != gardens) {
+				action++;
+			}
+		}
 
+		// Update actions and coins: 2 actions/coins for each revealed card of the appropriate type
+		pre.numActions += 2 * action;
+		preBonus += 2 * treasure;
 
+		// Draw cards if necessary
+		if (victory) {
+			victory *= 2;	// Update victory to the number of cards that need to be drawn
+			// Enough cards without a shuffle
+			if (pre.deckCount[cp] > = victory) {
+				// Draw cards
+				for (j = 0; j < victory; j++) {
+					pre.deckCount[cp]--;
+					pre.hand[cp][j] = pre.deck[cp][pre.deckCount[cp]];
+					pre.handCount[cp]++;
+				}
+			}
+			// 'Shuffle' first, trusting drawCard
+			else {
+				// Calculate what the new handsize will be, depending on the size of the deck and discard before the shuffle
+				int newHand,
+					totalDeck = pre.deckCount[cp] + pre.discardCount[cp];
+				if (totalDeck < victory) {
+					newHand = totalDeck;
+				}
+				else {
+					newHand = victory;
+				}
+
+				// Need to overwrite all the memory of pre's deck, discard, and hand with post's
+				// We need to cover all of pre's discard (since it will be bigger than post's)
+				// and all of post's hand (since it will be bigger than pre's)
+				// and all pre's discard and deck combined (cards before the draw)
+				memcpy(pre.discard[cp], post.discard[cp], sizeof(int)*pre.discardCount[cp]);
+				memcpy(pre.hand[cp], post.hand[cp], sizeof(int) * post.handCount[cp]);
+				memcpy(pre.deck[cp], post.deck[cp], sizeof(int)*totalDeck);
+
+				pre.deckCount[cp] = totalDeck - newHand;
+				pre.discardCount[cp] = 0;
+				pre.handCount[cp] = newHand;
+			}
+		}
 
 
 
