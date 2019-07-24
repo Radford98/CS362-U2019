@@ -23,7 +23,7 @@ int main() {
 
 	srand(time(0));
 	struct gameState pre, post;
-	int i, j, k, preBonus, postBonus, handPos, cp, np, trib[2], action, treasure, victory;
+	int i, j, k, preBonus, postBonus, handPos, cp, np, trib[2], action, treasure, victory, newHand, totalDeck;
 	int failCount = 0,
 		allGood = 1;
 
@@ -116,7 +116,37 @@ int main() {
 			trib[0] = post.discard[np][0];
 			trib[1] = post.discard[np][1];
 			
+			// Copy over shuffled values, set counts to what they should be
+			totalDeck = pre.deckCount[np] + pre.discardCount[np];
+			memcpy(pre.deck[np], post.deck[np], sizeof(int)*totalDeck);
+			memcpy(pre.discard[np], post.discard[np], sizeof(int)*pre.discardCount[np]);
+			pre.deckCount[np] = totalDeck - 2;
+			pre.discardCount[np] = 2;
+		}
+		// Option 3: Not enough cards for Tribute; 1 card in either deck or discard or no cards in either
+		else {
+			if (pre.deckCount[np] == 1) {
+				trib[0] = pre.deck[np][0];
+			}
+			else if (pre.discardCount[np] == 1) {
+				trib[0] = pre.discard[np][0];
+			}
+			else {
+				trib[0] = -1;
+			}
+			trib[1] = -1;		// Not enough cards, always set to -1
 
+			// In this scenario, deckCount will always be 0 and discard will be 0 or 1
+			memcpy(pre.deck[np], post.deck[np], sizeof(int)*pre.deckCount[np]);
+			memcpy(pre.discard[np], post.discard[np], sizeof(int)*post.discardCount[np]);
+			pre.deckCount[np] = 0;
+			// If trib[0] is -1, there were no cards to tribute and discardCount is 0; otherwise 1
+			if (trib[0] == -1) {
+				pre.discardCount[np] = 0;
+			}
+			else {
+				pre.discardCount[np] = 1;
+			}
 		}
 
 
@@ -126,6 +156,7 @@ int main() {
 		// updated based on what the tribute cards are.
 
 		// If the cards are the same, only check one card
+		// If one of them is set to -1 by Tribute the loop will run twice but won't increase any of the card counters
 		if (trib[0] == trib[1]) {
 			j = 1;
 		}
@@ -146,7 +177,7 @@ int main() {
 				treasure++;
 			}
 			// If an action card
-			if ((trib[j] >= 7)
+			if (trib[j] >= 7
 				&& trib[j] != gardens) {
 				action++;
 			}
@@ -171,8 +202,7 @@ int main() {
 			// 'Shuffle' first, trusting drawCard
 			else {
 				// Calculate what the new handsize will be, depending on the size of the deck and discard before the shuffle
-				int newHand,
-					totalDeck = pre.deckCount[cp] + pre.discardCount[cp];
+				totalDeck = pre.deckCount[cp] + pre.discardCount[cp];
 				if (totalDeck < victory) {
 					newHand = totalDeck;
 				}
