@@ -23,7 +23,17 @@ int main() {
 
 	srand(time(0));
 	struct gameState pre, post;
-	int i, j, k, preBonus, postBonus, handPos, cp, np, trib[2], action, treasure, victory, newHand, totalDeck;
+	/*
+	i, j are loop counters.
+	preBonus, postBonus check for accurate coin change
+	handPos is the position of the 'card' pretending to be Tribute
+	cp, np are current and next player respectively
+	trib[2] stores the tribute cards
+	action, treasure, victory count the types of cards in trib
+	newHand, totalDeck for copying correct values after shuffle
+	scenario tracks which Tribute situation arises for error reporting
+	*/
+	int i, j, preBonus, postBonus, handPos, cp, np, trib[2], action, treasure, victory, newHand, totalDeck, scenario;
 	int failCount = 0,
 		allGood = 1;
 
@@ -81,8 +91,9 @@ int main() {
 		// Set card counters
 		victory = treasure = action = 0;
 
-		// Option 1: Next player's deck has 2+ cards
+		// Scenario 1: Next player's deck has 2+ cards
 		if (pre.deckCount[np] >= 2) {
+			scenario = 1;
 			// Store the tribute cards
 			trib[0] = pre.deck[np][pre.deckCount[np] - 1];
 			trib[1] = pre.deck[np][pre.deckCount[np] - 2];
@@ -95,8 +106,9 @@ int main() {
 			}
 
 		}
-		// Option 2: Next player's deck has < 2 cards, but enough in discard, a shuffle is needed for Tribute
+		// Scenario 2: Next player's deck has < 2 cards, but enough in discard, a shuffle is needed for Tribute
 		else if (pre.deckCount[np] < 2 && pre.deckCount[np] + pre.discardCount[np] >= 2) {
+			scenario = 2;
 			// If there is 1 card in the deck, store it in trib[0]
 			if (pre.deckCount[np] == 1) {
 				trib[0] = pre.deck[np][pre.deckCount[np] - 1];
@@ -123,8 +135,9 @@ int main() {
 			pre.deckCount[np] = totalDeck - 2;
 			pre.discardCount[np] = 2;
 		}
-		// Option 3: Not enough cards for Tribute; 1 card in either deck or discard or no cards in either
+		// Scenario 3: Not enough cards for Tribute; 1 card in either deck or discard or no cards in either
 		else {
+			scenario = 3;
 			if (pre.deckCount[np] == 1) {
 				trib[0] = pre.deck[np][0];
 			}
@@ -156,7 +169,7 @@ int main() {
 		// updated based on what the tribute cards are.
 
 		// If the cards are the same, only check one card
-		// If one of them is set to -1 by Tribute the loop will run twice but won't increase any of the card counters
+		// If one of them is set to -1 the loop will run twice but won't increase any of the card counters
 		if (trib[0] == trib[1]) {
 			j = 1;
 		}
@@ -222,6 +235,44 @@ int main() {
 				pre.discardCount[cp] = 0;
 				pre.handCount[cp] = newHand;
 			}
+		}
+
+
+
+		// Print results
+		if (memcmp(&pre, &post, sizeof(struct gameState)) != 0) {
+			printf("Test %d: gameStates do not match.\tScenario: %d\ttrib[0]: %d\ttrib[1]: %d\n", i, scenario, trib[0], trib[1]);
+			if (pre.numActions != post.numActions) {
+				printf("numActions is %d, expected %d\n", post.numActions, pre.numActions);
+			}
+			if (pre.playedCardCount != post.playedCardCount) {
+				printf("playedCardCount is %d, expected %d\n", post.playedCardCount, pre.playedCardCount);
+			}
+			// Current player errors
+			if (pre.handCount[cp] != post.handCount[cp]) {
+				printf("Current Player's hand is %d, expected %d\n", post.handCount[cp], pre.handCount[cp]);
+			}
+			if (pre.discardCount[cp] != post.discardCount[cp]) {
+				printf("Current Player's discardCount is %d, expected %d\n", post.discardCount[cp], pre.discardCount[cp]);
+			}
+			if (pre.deckCount[cp] != post.deckCount[cp]) {
+				printf("Current Player's deckCount is %d, expected %d\n", post.deckCount[cp], pre.deckCount[cp]);
+			}
+			// Next player errors
+			if (pre.discardCount[np] != post.discardCount[np]) {
+				printf("Next Player's discardCount is %d, expected %d\n", post.discardCount[np], pre.discardCount[np]);
+			}
+			if (pre.deckCount[np] != post.deckCount[np]) {
+				printf("Next Player's deckCount is %d, expected %d\n", post.deckCount[np], pre.deckCount[np]);
+			}
+
+
+			failCount++;
+			allGood = 0;
+		}
+		if (preBonus != postBonus) {
+			printf("Test %d, Scenario %d: Bonus is %d, expected %d\n", i, scenario, postBonus, preBonus);
+			allGood = 0;
 		}
 
 
