@@ -15,7 +15,6 @@ cardtest1: randomtestcard2.c dominion.o rngs.o cardEffect.o
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <limits.h>
 
 #define TESTCARD "Minion"
 
@@ -43,9 +42,9 @@ int main() {
 		// Set up each player with reasonable numbers
 		// For a redraw, the hand, discard, and deck all get added together so combined they should never exceed MAX_DECK/HAND
 		for (j = 0; j < post.numPlayers; j++) {
-			post.handCount[j] = (rand() % MAX_HAND);
-			post.discardCount[j] = (rand() % (MAX_DECK-post.handCount[j]));
-			post.deckCount[j] = (rand() % (MAX_DECK-post.handCount[j]-post.discardCount[j]));
+			post.discardCount[j] = (rand() % MAX_DECK);
+			post.deckCount[j] = (rand() % (MAX_DECK-post.discardCount[j]));
+			post.handCount[j] = (rand() % (MAX_HAND-post.discardCount[j]-post.deckCount[j]));
 		}
 
 		// Handcount must be at least 1 to be the "minion" (handPos for discardCard in function)
@@ -195,5 +194,6 @@ int main() {
 		printf("Total times gameStates didn't match: %d\nCheck gcov for patterns.\n", failCount);
 	}
 	// No need for default else since the bonus failures are already reported above.
+
 	return 0;
 }
