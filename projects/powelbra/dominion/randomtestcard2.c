@@ -91,17 +91,32 @@ int main() {
 					pre.handCount[cp]++;
 				}
 			}
-			// If there aren't 4 cards to draw, we need to trust the drawCard function in minion
-			// Since any sort of shuffle here will come up with a different number due to random()
-			// The deckCount should now be discardCount-(4-deckCount) = discardCount+deckCount-4 to account for some cards drawn.
-			// E.g. 10 cards in discard, 1 in deck. 1 card in deck drawn, shuffle discard, draw 3 more for 7 cards in deck.
+			// If there aren't 4 cards to draw, we need to trust the drawCard function in Minion
+			// since any sort of shuffle here will come up with a different number due to random()
 			else {
-				memcpy(pre.deck[cp], post.deck[cp], sizeof(int)*(pre.discardCount[cp] + pre.deckCount[cp] - 4));
+				// Calculate what the new handsize will be, depending on the size of the deck and discard and hand before the shuffle
+				int newHand,
+					totalDeck = pre.deckCount[cp] + pre.discardCount[cp] + pre.handCount[cp];
+				if (totalDeck < 4) {
+					newHand = totalDeck;
+				}
+				else {
+					newHand = 4;
+				}
+				// Need to overwrite all the memory of pre's deck, discard, and hand with post's
+				// For discard and hand, we need to use pre's numbers so there aren't 'loose cards' beyond the boundary of what will be the new hand/discardCount.
 				memcpy(pre.discard[cp], post.discard[cp], sizeof(int)*pre.discardCount[cp]);
-				memcpy(pre.hand[cp], post.hand[cp], sizeof(int) * 4);
-				pre.deckCount[cp] = pre.discardCount[cp] + pre.deckCount[cp] - 4;
+				memcpy(pre.hand[cp], post.hand[cp], sizeof(int) * pre.handCount[cp]);
+
+				// For the deck, we need to use the new deckCount so all of the 'cards' are properly transferred
+				// deckCount is 1) previous deck, 2) previous discard, and 3) previous hand minus minion (taken care of above), minus number of cards drawn (newHand)
+				// However, after the shuffle there are totalDeck cards before newHand cards are drawn and we want to make sure those blocks of memory are the same.
+				memcpy(pre.deck[cp], post.deck[cp], sizeof(int)*totalDeck);
+
+				// Discard will always be empty after a shuffle and handCount will be newHand as calculated above
+				pre.deckCount[cp] = totalDeck - newHand;
 				pre.discardCount[cp] = 0;
-				pre.handCount[cp] = 4;
+				pre.handCount[cp] = newHand;
 
 			}
 
