@@ -186,16 +186,16 @@ int main() {
 			allGood = 0;
 		}
 
-		// If no errors, print success message.
-		if (allGood) {
-			printf("All tests passed.\n");
-		}
-		// If any gameState failures, print number of failures
-		else if (failCount > 0) {
-			printf("Total times gameStates didn't match: %d\nCheck gcov for patterns.\n", failCount);
-		}
-		// No need for default else since the bonus failures are already reported above.
-
 	}
+
+	// If no errors, print success message.
+	if (allGood) {
+		printf("All tests passed.\n");
+	}
+	// If any gameState failures, print number of failures
+	else if (failCount > 0) {
+		printf("Total times gameStates didn't match: %d\nCheck gcov for patterns.\n", failCount);
+	}
+	// No need for default else since the bonus failures are already reported above.
 	return 0;
 }
