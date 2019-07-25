@@ -156,17 +156,17 @@ int playAmbassador(int choice1, int choice2, struct gameState *state, int handPo
 // which is why they seem to be disappearing.
 void playTribute(struct gameState *state, int handPos, int* bonus) {
 	int currentPlayer = whoseTurn(state);
-	int nextPlayer = currentPlayer + 1;
+	int nextPlayer = (currentPlayer + 1) % state->numPlayers;
 	int tributeRevealedCards[2] = { -1, -1 };
-	int i, j;
+	int i;
 
 	// Check if there is a single or no cards in the next player's deck and discard combined.
 	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
 		// If that single card is in the deck, add it to the tribute.
 		if (state->deckCount[nextPlayer] > 0) {
 			tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
-//			state->discard[nextPlayer][state->discardCount[nextPlayer]] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
-//			state->discardCount[nextPlayer]++;
+			state->discard[nextPlayer][state->discardCount[nextPlayer]] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
+			state->discardCount[nextPlayer]++;
 			state->deckCount[nextPlayer]--;
 		}
 		// If that single card is in the discard, add it to tribute. 
@@ -185,13 +185,6 @@ void playTribute(struct gameState *state, int handPos, int* bonus) {
 	// If there is more than 1 card in the deck
 	else {
 		// check if there are cards in the deck and shuffle if not
-		/*********** edited for segfault, handler for 1 card in deck, uses j instead of i for tribute below ******/
-		j = 0;
-		if (state->deckCount[nextPlayer] == 1) {
-			tributeRevealedCards[0] = state->deck[nextPlayer][0];
-			state->deckCount[nextPlayer]--;
-			j++;
-		}
 		if (state->deckCount[nextPlayer] == 0) {
 			for (i = 0; i < state->discardCount[nextPlayer]; i++) {
 				state->deck[nextPlayer][i] = state->discard[nextPlayer][i];//Move to deck
@@ -204,8 +197,8 @@ void playTribute(struct gameState *state, int handPos, int* bonus) {
 			shuffle(nextPlayer, state);//Shuffle the deck
 		}
 		// Add the top two cards of the deck to tribute, decrementing deckCount each time.
-		for (; j < 2; j++) {		/************* edited for segfault, originally i <= 2 *****/
-			tributeRevealedCards[j] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
+		for (i = 0; i <= 2; i++) {
+			tributeRevealedCards[i] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
 			state->deck[nextPlayer][state->deckCount[nextPlayer]-1] = -1;
 			state->deckCount[nextPlayer]--;
 		}
@@ -218,7 +211,7 @@ void playTribute(struct gameState *state, int handPos, int* bonus) {
 	}
 
 	// Check tribute cards and increase appropriate parameters.
-	for (i = 0; i < 2; i++) {		/************ edited for segfault, originally i <= 2 *******/
+	for (i = 0; i <= 2; i++) {
 		if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) {//Treasure cards
 			bonus += 2;
 		}
