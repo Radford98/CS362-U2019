@@ -52,7 +52,7 @@ randomtestresults: randomtestcard1.c randomtestcard2.c randomtestcard3.c dominio
 	./randomtestcard2 >> randomtestresults.out
 	gcov -b -f -c randomtestcard2.c >> randomtestresults.out
 	echo "randomtestcard3.c:" >> randomtestresults.out
-	gcc -o randomtestcard3 -g randomtestcard3.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+	gcc -o randomtestcard3 -g randomtestcard3.c dominion.o rngs.o cardEffect.o interface.o $(CFLAGS)
 	./randomtestcard3 >> randomtestresults.out
 	gcov -b -f -c randomtestcard3.c >> randomtestresults.out
 	echo "Coverage of card functions:" >> randomtestresults.out
