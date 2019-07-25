@@ -11,6 +11,7 @@ cardtest1: randomtestcard3.c dominion.o rngs.o cardEffect.o
 #include "dominion_helpers.h"
 #include "rngs.h"
 #include "cardEffect.h"
+#include "interface.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,6 +37,7 @@ int main() {
 	int i, j, preBonus, postBonus, handPos, cp, np, trib[2], action, treasure, victory, newHand, totalDeck, scenario;
 	int failCount = 0,
 		allGood = 1;
+	char cardName[2][MAX_STRING_LENGTH];	// Store tribute card names
 
 	for (i = 1; i <= 5000; i++) {
 		// Generate a random game state with bytes from 0-255
@@ -53,7 +55,7 @@ int main() {
 		// Set up the current player with reasonable numbers
 		// In the event of a shuffle, the discard and deck will be combined, so their total shouldn't exceed MAX_DECK
 		post.discardCount[cp] = (rand() % MAX_DECK);
-		post.deckCount[cp] = (rand() % (MAX_DECK - post.discardCount[j]));
+		post.deckCount[cp] = (rand() % (MAX_DECK - post.discardCount[cp]));
 		post.handCount[cp] = (rand() % (MAX_HAND - 4));		// The current player could draw up to 4 cards
 
 		// Handcount must be at least 1 to be the "Tribute" (handPos for discardCard in function)
@@ -204,7 +206,7 @@ int main() {
 		if (victory) {
 			victory *= 2;	// Update victory to the number of cards that need to be drawn
 			// Enough cards without a shuffle
-			if (pre.deckCount[cp] > = victory) {
+			if (pre.deckCount[cp] >= victory) {
 				// Draw cards
 				for (j = 0; j < victory; j++) {
 					pre.deckCount[cp]--;
@@ -237,11 +239,14 @@ int main() {
 			}
 		}
 
+		for (j = 0; j < 2; j++) {
+			cardNumToName(trib[j], cardName[j]);
+		}
 
 
 		// Print results
 		if (memcmp(&pre, &post, sizeof(struct gameState)) != 0) {
-			printf("Test %d: gameStates do not match.\tScenario: %d\ttrib[0]: %d\ttrib[1]: %d\n", i, scenario, trib[0], trib[1]);
+			printf("Test %d: gameStates do not match.\tScenario: %d\ttrib[0]: %s\ttrib[1]: %s\n", i, scenario, cardName[0], cardName[1]);
 			if (pre.numActions != post.numActions) {
 				printf("numActions is %d, expected %d\n", post.numActions, pre.numActions);
 			}
