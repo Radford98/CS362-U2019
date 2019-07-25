@@ -38,8 +38,8 @@ randomtestcard1: randomtestcard1.c dominion.o rngs.o cardEffect.o
 randomtestcard2: randomtestcard2.c dominion.o rngs.o cardEffect.o
 	gcc -o randomtestcard2 -g randomtestcard2.c dominion.o rngs.o cardEffect.o $(CFLAGS)
 
-randomtestcard3: randomtestcard3.c dominion.o rngs.o cardEffect.o
-	gcc -o randomtestcard3 -g randomtestcard3.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+randomtestcard3: randomtestcard3.c dominion.o rngs.o cardEffect.o interface.o
+	gcc -o randomtestcard3 -g randomtestcard3.c dominion.o rngs.o cardEffect.o interface.o $(CFLAGS)
 
 randomtestresults: randomtestcard1.c randomtestcard2.c randomtestcard3.c dominion.o rngs.o cardEffect.o
 	echo "Running random card tests" > randomtestresults.out

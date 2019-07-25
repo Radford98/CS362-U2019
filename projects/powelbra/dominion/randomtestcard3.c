@@ -243,7 +243,6 @@ int main() {
 			cardNumToName(trib[j], cardName[j]);
 		}
 
-
 		// Print results
 		if (memcmp(&pre, &post, sizeof(struct gameState)) != 0) {
 			printf("Test %d: gameStates do not match.\tScenario: %d\ttrib[0]: %s\ttrib[1]: %s\n", i, scenario, cardName[0], cardName[1]);
