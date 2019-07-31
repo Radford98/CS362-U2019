@@ -6,6 +6,9 @@ rngs.o: rngs.h rngs.c
 cardEffect.o: cardEffect.h cardEffect.c
 	gcc -c cardEffect.c -g $(CFLAGS)
 
+testHelp.o: testHelp.h testHelp.c
+	gcc -c testHelp.c -g $(CFLAGS)
+
 dominion.o: dominion.h dominion.c rngs.o cardEffect.o
 	gcc -c dominion.c -g  $(CFLAGS)
 
@@ -60,6 +63,84 @@ randomtestresults: randomtestcard1.c randomtestcard2.c randomtestcard3.c dominio
 
 player: player.c interface.o dominion.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o cardEffect.o $(CFLAGS)
+
+unittest1: unittest1.c dominion.o rngs.o cardEffect.o testHelp.o
+	gcc -o unittest1 -g unittest1.c dominion.o rngs.o cardEffect.o testHelp.o $(CFLAGS)
+
+unittest2: unittest2.c dominion.o rngs.o cardEffect.o testHelp.o
+	gcc -o unittest2 -g unittest2.c dominion.o rngs.o cardEffect.o testHelp.o $(CFLAGS)
+
+unittest3: unittest3.c dominion.o rngs.o cardEffect.o testHelp.o
+	gcc -o unittest3 -g unittest3.c dominion.o rngs.o cardEffect.o testHelp.o $(CFLAGS)
+
+unittest4: unittest4.c dominion.o rngs.o cardEffect.o testHelp.o
+	gcc -o unittest4 -g unittest4.c dominion.o rngs.o cardEffect.o testHelp.o $(CFLAGS)
+
+unittest5: unittest5.c dominion.o rngs.o cardEffect.o testHelp.o
+	gcc -o unittest5 -g unittest5.c dominion.o rngs.o cardEffect.o testHelp.o $(CFLAGS)
+
+cardtest1: cardtest1.c dominion.o rngs.o cardEffect.o interface.o
+	gcc -o cardtest1 -g cardtest1.c dominion.o rngs.o cardEffect.o interface.o $(CFLAGS)
+
+cardtest2: cardtest2.c dominion.o rngs.o cardEffect.o
+	gcc -o cardtest2 -g cardtest2.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+
+cardtest3: cardtest3.c dominion.o rngs.o cardEffect.o
+	gcc -o cardtest3 -g cardtest3.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+
+cardtest4: cardtest4.c dominion.o rngs.o cardEffect.o interface.o
+	gcc -o cardtest4 -g cardtest4.c dominion.o rngs.o cardEffect.o interface.o $(CFLAGS)
+
+cardtest5: cardtest5.c dominion.o rngs.o cardEffect.o
+	gcc -o cardtest5 -g cardtest5.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+	
+unittestresults: unittest1.c unittest2.c unittest3.c unittest4.c unittest5.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c cardtest5.c dominion.o rngs.o cardEffect.o interface.o testHelp.o
+	echo "Running unit and card tests" > unittestresults.out
+	echo "unittest1.c:" >> unittestresults.out
+	gcc -o unittest1 -g unittest1.c dominion.o rngs.o cardEffect.o testHelp.o $(CFLAGS)
+	./unittest1 >> unittestresults.out
+	gcov -b -f -c unittest1.c >> unittestresults.out
+	echo "unittest2.c:" >> unittestresults.out
+	gcc -o unittest2 -g unittest2.c dominion.o rngs.o cardEffect.o testHelp.o $(CFLAGS)
+	./unittest2 >> unittestresults.out
+	gcov -b -f -c unittest2.c >> unittestresults.out
+	echo "unittest3.c:" >> unittestresults.out
+	gcc -o unittest3 -g unittest3.c dominion.o rngs.o cardEffect.o testHelp.o $(CFLAGS)
+	./unittest3 >> unittestresults.out
+	gcov -b -f -c unittest3.c >> unittestresults.out
+	echo "unittest4.c:" >> unittestresults.out
+	gcc -o unittest4 -g unittest4.c dominion.o rngs.o cardEffect.o testHelp.o $(CFLAGS)
+	./unittest4 >> unittestresults.out
+	gcov -b -f -c unittest4.c >> unittestresults.out
+	echo "unittest5.c:" >> unittestresults.out
+	gcc -o unittest5 -g unittest5.c dominion.o rngs.o cardEffect.o testHelp.o $(CFLAGS)
+	./unittest5 >> unittestresults.out
+	gcov -b -f -c unittest5.c >> unittestresults.out
+	echo "cardtest1.c:" >> unittestresults.out
+	gcc -o cardtest1 -g cardtest1.c dominion.o rngs.o cardEffect.o interface.o $(CFLAGS)
+	./cardtest1 >> unittestresults.out
+	gcov -b -f -c cardtest1.c >> unittestresults.out
+	echo "cardtest2.c:" >> unittestresults.out
+	gcc -o cardtest2 -g cardtest2.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+	./cardtest2 >> unittestresults.out
+	gcov -b -f -c cardtest2.c >> unittestresults.out
+	echo "cardtest3.c:" >> unittestresults.out
+	gcc -o cardtest3 -g cardtest3.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+	./cardtest3 >> unittestresults.out
+	gcov -b -f -c cardtest3.c >> unittestresults.out
+	echo "cardtest4.c:" >> unittestresults.out
+	gcc -o cardtest4 -g cardtest4.c dominion.o rngs.o cardEffect.o interface.o $(CFLAGS)
+	./cardtest4 >> unittestresults.out
+	gcov -b -f -c cardtest4.c >> unittestresults.out
+	echo "cardtest5.c:" >> unittestresults.out
+	gcc -o cardtest5 -g cardtest5.c dominion.o rngs.o cardEffect.o $(CFLAGS)
+	./cardtest5 >> unittestresults.out
+	gcov -b -f -c cardtest5.c >> unittestresults.out
+	echo "Coverage of card functions:" >> unittestresults.out
+	gcov -b -f -c cardEffect.c >> unittestresults.out
+	echo "Coverage of dominion.c code:" >> unittestresults.out
+	gcov -b -f -c dominion.c >> unittestresults.out
+
 
 all: playdom player 
 
