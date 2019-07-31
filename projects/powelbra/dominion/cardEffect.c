@@ -156,7 +156,7 @@ int playAmbassador(int choice1, int choice2, struct gameState *state, int handPo
 // which is why they seem to be disappearing.
 void playTribute(struct gameState *state, int handPos, int* bonus) {
 	int currentPlayer = whoseTurn(state);
-	int nextPlayer = currentPlayer + 1;
+	int nextPlayer = (currentPlayer + 1) % state->numPlayers;
 	int tributeRevealedCards[2] = { -1, -1 };
 	int i;
 
