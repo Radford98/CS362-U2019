@@ -79,7 +79,7 @@ int main() {
 			
 
 			// Opponents discard their hands and draw new cards on 4 or higher
-			int redraw;		// bool to trigger rewdraw or not
+			int redraw = 0;		// bool to trigger rewdraw or not
 			for (j = 0; j < pre.numPlayers; j++) {
 				// Current player always redraws their hand
 				if (j == cp) {

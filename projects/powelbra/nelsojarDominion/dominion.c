@@ -1306,7 +1306,11 @@ int minion_play(struct gameState* state, int choice1, int choice2, int currentPl
 		//discard hand
 		while (numHandCards(state) > 0)
 		{
-			discardCard(handPos, currentPlayer, state, 0);
+			//discardCard(handPos, currentPlayer, state, 0);
+			state->handCount[currentPlayer]--;
+			state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][state->handCount[currentPlayer]];
+			state->discardCount[currentPlayer]++;
+			state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
 		}
 
 		//draw 4
@@ -1325,7 +1329,11 @@ int minion_play(struct gameState* state, int choice1, int choice2, int currentPl
 					//discard hand
 					while (state->handCount[i] > 0)
 					{
-						discardCard(handPos, i, state, 0);
+						//discardCard(handPos, i, state, 0);
+						state->handCount[i]--;
+						state->discard[i][state->discardCount[i]] = state->hand[i][state->handCount[i]];
+						state->discardCount[i]++;
+						state->hand[i][state->handCount[i]] = -1;
 					}
 
 					//draw 4
