@@ -9,7 +9,6 @@ unittest5: unittest5.c dominion.o rngs.o cardEffect.o testHelp.o
 
 #include "dominion.h"
 #include "dominion_helpers.h"
-#include "cardEffect.h"
 #include "testHelp.h"
 #include "rngs.h"
 #include <string.h>

@@ -9,9 +9,8 @@ unittest2: unittest2.c dominion.o rngs.o cardEffect.o testHelp.o
 
 #include "dominion.h"
 #include "dominion_helpers.h"
-#include "cardEffect.h"
-#include "testHelp.h"
 #include "rngs.h"
+#include "testHelp.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -135,7 +134,7 @@ int main() {
 	printf("Expected discardCount: %d\tActual discardCount: %d\n", G.discardCount[currentPlayer] + 5, testG.discardCount[currentPlayer]);
 
 	// Coins should equal coppers in hand
-	int copCount;
+	int copCount = 0;
 	for (i = 0; i < testG.handCount[currentPlayer]; i++) {
 		if (testG.hand[currentPlayer][i] == copper) {
 			copCount++;
