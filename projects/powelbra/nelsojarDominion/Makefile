@@ -96,13 +96,13 @@ cardtest4: cardtest4.c dominion.c rngs.c
 randomtestresults: randomtestcard1.c randomtestcard2.c randomtestcard3.c dominion.o
 	echo "Result for running Random Card Tests:" > randomtestresults.out
 	echo "randomtestcard1.c:" >> randomtestresults.out
-	gcc -o randomtestcard1 -g randomtestcard1.c dominion.c rngs.c $(CFLAGS)
+	gcc -o randomtestcard1 -g randomtestcard1.c dominion.o rngs.c $(CFLAGS)
 	./randomtestcard1 >> randomtestresults.out
 	echo "randomtestcard2.c:" >> randomtestresults.out
-	gcc -o randomtestcard2 -g randomtestcard2.c dominion.c rngs.c $(CFLAGS)
+	gcc -o randomtestcard2 -g randomtestcard2.c dominion.o rngs.c $(CFLAGS)
 	./randomtestcard2 >> randomtestresults.out
 	echo "randomtestcard3.c:" >> randomtestresults.out
-	gcc -o randomtestcard3 -g randomtestcard3.c dominion.c rngs.c $(CFLAGS)
+	gcc -o randomtestcard3 -g randomtestcard3.c dominion.o rngs.c $(CFLAGS)
 	./randomtestcard3 >> randomtestresults.out
 	gcov -b -f -c dominion.c >> randomtestresults.out
 	
