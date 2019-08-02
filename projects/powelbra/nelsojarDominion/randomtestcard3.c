@@ -84,7 +84,8 @@ int main() {
 		memcpy(&pre, &post, sizeof(struct gameState));
 
 		// Test Tribute
-		playTribute(&post, handPos, &postBonus);
+		int tributeRevealedCards[2] = { -1, -1 };
+		tribute_play(&post, tributeRevealedCards, post.whoseTurn, post.whoseTurn % post.numPlayers);
 
 		// Tribute should always be discarded/moved to the played area
 		discardCard(handPos, cp, &pre, 0);

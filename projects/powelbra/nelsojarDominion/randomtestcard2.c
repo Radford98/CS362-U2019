@@ -64,8 +64,8 @@ int main() {
 		choice2 = (rand() % 8) - 1;		// -1 to 6; 3/4 chance of being greater than 0
 
 		// Test Minion
-		playMinion(choice1, choice2, &post, handPos, &postBonus);
-
+		minion_play(&post, choice1, choice2, post.whoseTurn, handPos);
+		
 		// Minion should always have +1 action and discarded/moved to the played area
 		pre.numActions++;
 		discardCard(handPos, cp, &pre, 0);

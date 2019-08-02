@@ -54,7 +54,7 @@ int main() {
 		choice = (rand() % 3) - 1;	// Test choices of -1, 0, or 1
 
 		// Test Baron
-		playBaron(choice, &post, handPos, &postBonus);
+		baron_play(&post, choice, post.whoseTurn);
 		
 		// Baron will always have +1 buy and the card should always be discarded
 		pre.numBuys++;
