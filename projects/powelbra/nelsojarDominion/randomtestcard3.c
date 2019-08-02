@@ -85,7 +85,7 @@ int main() {
 
 		// Test Tribute
 		int tributeRevealedCards[2] = { -1, -1 };
-		tribute_play(&post, tributeRevealedCards, post.whoseTurn, post.whoseTurn % post.numPlayers);
+		tribute_play(&post, tributeRevealedCards, post.whoseTurn, (post.whoseTurn+1) % post.numPlayers);
 
 		// Tribute should always be discarded/moved to the played area
 		discardCard(handPos, cp, &pre, 0);
@@ -274,7 +274,7 @@ int main() {
 			failCount++;
 			allGood = 0;
 		}
-		if (preBonus != postBonus) {
+		if (preBonus != post.coins) {
 			printf("--- Test %d, Scenario %d: Bonus is %d, expected %d\n", i, scenario, postBonus, preBonus);
 			allGood = 0;
 		}
