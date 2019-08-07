@@ -107,7 +107,7 @@ public class UrlValidator implements Serializable {
      * This expression derived/taken from the BNF for URI (RFC2396).
      */
     private static final String URL_REGEX =
-            "^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?";
+            "^(([^:/?#]+):)?(//([^/?#]*))?([^?#])(\\?([^#]*))?(#(.*))?";
     //        12            3  4          5       6   7        8 9
     private static final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
 
