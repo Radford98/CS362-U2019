@@ -16,6 +16,7 @@
  */
 
 import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * Performs Validation Test for url validations.
@@ -37,6 +38,16 @@ protected void setUp() {
          testPartsIndex[index] = 0;
       }
    }
+
+    public void testUnitIsValid(){
+        UrlValidator validator = new UrlValidator();
+
+        assertTrue(validator.isValid("http://www.apache.org/test/index.html"));
+    }
+
+    public void testRandomIsValid(){
+        // Insert Function Here
+    }
 
    public void testIsValid() {
         testIsValid(testUrlParts, UrlValidator.ALLOW_ALL_SCHEMES);
