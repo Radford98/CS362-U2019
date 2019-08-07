@@ -83,6 +83,11 @@ protected void setUp() {
             expected &= urlPiece.valid;
 
             valid = Validator.isValid(url);
+
+            // If statement to set up breakpoint to look in the isValid function
+            if (valid != expected){
+                valid = Validator.isValid(url);
+            }
             assertEquals(url, expected, valid);
 
         }

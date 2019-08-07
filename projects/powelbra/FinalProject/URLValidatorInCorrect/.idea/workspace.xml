@@ -13,11 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/UrlValidator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="109" column="48" selection-start-line="109" selection-start-column="48" selection-end-line="109" selection-end-column="48" />
+            <state relative-caret-position="176">
+              <caret line="109" column="49" selection-start-line="109" selection-start-column="42" selection-end-line="109" selection-end-column="49" />
               <folding>
                 <element signature="e#19744#19745#0" expanded="true" />
                 <element signature="e#19788#19789#0" expanded="true" />
@@ -26,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/UrlValidatorTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="557" column="56" selection-start-line="557" selection-start-column="49" selection-end-line="557" selection-end-column="56" />
+            <state relative-caret-position="193">
+              <caret line="88" selection-start-line="88" selection-end-line="88" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#15773#15774#0" expanded="true" />
@@ -58,6 +58,7 @@
       <find>?action</find>
       <find>testRandom</find>
       <find>$23</find>
+      <find>regex patt</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -66,14 +67,14 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/test/UrlValidatorTest.java" />
         <option value="$PROJECT_DIR$/src/UrlValidator.java" />
+        <option value="$PROJECT_DIR$/test/UrlValidatorTest.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="953" />
-    <option name="width" value="974" />
+    <option name="x" value="476" />
+    <option name="width" value="1451" />
     <option name="height" value="1047" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -200,27 +201,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 09h 06m 18s.xml">
-      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 09h 07m 57s.xml">
-      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 09h 09m 07s.xml">
-      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 09h 09m 58s.xml">
-      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UrlValidatorTest - 2019.08.07 at 09h 10m 13s.xml">
-      <configuration name="UrlValidatorTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UrlValidatorTest - 2019.08.07 at 09h 10m 24s.xml">
-      <configuration name="UrlValidatorTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 09h 12m 48s.xml">
-      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 09h 13m 51s.xml">
       <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
     </history-entry>
@@ -230,12 +210,33 @@
     <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 09h 20m 24s.xml">
       <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 09h 45m 22s.xml">
+      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 09h 56m 46s.xml">
+      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 09h 58m 48s.xml">
+      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 10h 12m 26s.xml">
+      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 10h 12m 35s.xml">
+      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 10h 16m 33s.xml">
+      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UrlValidatorTest_testRandomIsValid - 2019.08.07 at 10h 17m 00s.xml">
+      <configuration name="UrlValidatorTest.testRandomIsValid" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="953" y="0" width="974" height="1047" extended-state="0" />
+    <frame x="476" y="0" width="1451" height="1047" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19474836" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1279655" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -268,11 +269,10 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="expected != valid" language="JAVA" />
           <url>file://$PROJECT_DIR$/test/UrlValidatorTest.java</url>
-          <line>85</line>
+          <line>88</line>
           <properties />
-          <option name="timeStamp" value="13" />
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -423,25 +423,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/UrlValidator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="109" column="48" selection-start-line="109" selection-start-column="48" selection-end-line="109" selection-end-column="48" />
-          <folding>
-            <element signature="e#19744#19745#0" expanded="true" />
-            <element signature="e#19788#19789#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/UrlValidatorTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="557" column="56" selection-start-line="557" selection-start-column="49" selection-end-line="557" selection-end-column="56" />
+        <state relative-caret-position="193">
+          <caret line="88" selection-start-line="88" selection-end-line="88" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#15773#15774#0" expanded="true" />
             <element signature="e#15802#15803#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/UrlValidator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="109" column="49" selection-start-line="109" selection-start-column="42" selection-end-line="109" selection-end-column="49" />
+          <folding>
+            <element signature="e#19744#19745#0" expanded="true" />
+            <element signature="e#19788#19789#0" expanded="true" />
           </folding>
         </state>
       </provider>
