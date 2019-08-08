@@ -166,10 +166,10 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
       state->handCount[i] = 0;
       state->discardCount[i] = 0;
       //draw 5 cards
-      // for (j = 0; j < 5; j++)
-      //	{
-      //	  drawCard(i, state);
-      //	}
+      for (j = 0; j < 5; j++)
+      	{
+      	  drawCard(i, state);
+      	}
     }
   
   //set embargo tokens to 0 for all supply piles
@@ -185,13 +185,6 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
   state->numBuys = 1;
   state->playedCardCount = 0;
   state->whoseTurn = 0;
-  state->handCount[state->whoseTurn] = 0;
-  //int it; move to top
-
-  //Moved draw cards to here, only drawing at the start of a turn
-  for (it = 0; it < 5; it++){
-    drawCard(state->whoseTurn, state);
-  }
 
   updateCoins(state->whoseTurn, state, 0);
 
@@ -358,6 +351,18 @@ int endTurn(struct gameState *state) {
     state->hand[currentPlayer][i] = -1;//Set card to -1
   }
   state->handCount[currentPlayer] = 0;//Reset hand count
+  //Discard played cards
+  while (state->playedCardCount > 0) {
+	  state->playedCardCount--;
+	  state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->playedCards[state->playedCardCount];
+	  state->playedCards[state->playedCardCount] = -1;
+	  state->discardCount[currentPlayer]++;
+  }
+  //Draw card before switching players
+  for (k = 0; k < 5; k++) {
+	  drawCard(state->whoseTurn, state);//Draw a card
+  }
+
     
   //Code for determining the player
   if (currentPlayer < (state->numPlayers - 1)){ 
@@ -372,14 +377,6 @@ int endTurn(struct gameState *state) {
   state->numActions = 1;
   state->coins = 0;
   state->numBuys = 1;
-  state->playedCardCount = 0;
-  state->handCount[state->whoseTurn] = 0;
-
-  //int k; move to top
-  //Next player draws hand
-  for (k = 0; k < 5; k++){
-    drawCard(state->whoseTurn, state);//Draw a card
-  }
 
   //Update money
   updateCoins(state->whoseTurn, state , 0);
