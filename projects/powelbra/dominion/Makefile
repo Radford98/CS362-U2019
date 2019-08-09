@@ -29,6 +29,16 @@ runtests: testDrawCard
 	gcov dominion.c >> unittestresult.out
 	cat dominion.c.gcov >> unittestresult.out
 
+extracredit: testEndTurn.c testInitGame. testScoreFor.c dominion.o interface.o rngs.o
+	echo "Testing initializeGame, endTurn, and scoreFor." > unittestresult.out
+	gcc -o testEndTurn testEndTurn.c dominion.o interface.o rngs.o $(CFLAGS)
+	./testEndTurn >> unittestresult.out
+	gcc -o testInitGame testInitGame.c dominion.o interface.o rngs.o
+	./testInitGame >> unittestresult.out
+	gcc -o testScoreFor testScoreFor.c dominion.o interface.o rngs.o
+	./testScoreFor >> unittestresult.out
+	gcov -b -f -c dominion.c >> unittestresult.out
+	cat dominion.c.gcov >> unittestresult.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
