@@ -6,6 +6,7 @@ Unit test for the getWinners dominion function.
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
+#include "interface.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +18,6 @@ int main() {
 	int k[10] = { baron, minion, ambassador, tribute, mine, gardens, village, smithy, adventurer, great_hall };
 	int seed = 100;
 	struct gameState G;
-	int players[MAX_PLAYERS];
 
 	initializeGame(4, k, seed, &G);
 
