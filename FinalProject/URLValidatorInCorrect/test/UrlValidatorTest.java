@@ -17,6 +17,10 @@
 
 import junit.framework.TestCase;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  * Performs Validation Test for url validations.
  *
@@ -73,12 +77,56 @@ protected void setUp() {
 
    }
 
+    public void testIsValid(Object[] testObjects, long options) {
+        UrlValidator urlVal = new UrlValidator(null, null, options);
+        assertTrue(urlVal.isValid("http://www.google.com"));
+        assertTrue(urlVal.isValid("http://www.google.com/"));
+
+        BufferedReader reader;
+        int lineNumber = 0;
+        int failedTests = 0;
+        int passedTests = 0;
+        try {
+            reader = new BufferedReader(new FileReader("testUrls.txt"));
+            String line = reader.readLine();
+            while(line!= null) {
+
+                lineNumber++;
+                System.out.println(lineNumber + ": " + line);
+
+                //determine line isValid() boolean
+                boolean result = urlVal.isValid(line);
+
+                if(lineNumber > 50) {
+                    //if isValid() result == false then success
+                    if(result == false) { System.out.println("Success");passedTests++;}
+                    //if is Valid() result == true then failure
+                    else { System.out.println("Failure");failedTests++;}
+                }
+                else {
+                    if(result == true) { System.out.println("Success");passedTests++;}
+                    else { System.out.println("Failure");failedTests++;}
+                }
+                //next line
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch(IOException e) {
+            System.out.println("Cannot open file");
+            e.printStackTrace();
+        }
+
+        System.out.println("Failures = "+ failedTests + "/100"+" Successes= " + passedTests+"/100");
+    }
+
+    /*
+
    /**
     * Create set of tests by taking the testUrlXXX arrays and
     * running through all possible permutations of their combinations.
     *
     * @param testObjects Used to create a url.
-    */
+    /
    public void testIsValid(Object[] testObjects, long options) {
       UrlValidator urlVal = new UrlValidator(null, null, options);
       assertTrue(urlVal.isValid("http://www.google.com"));
@@ -121,7 +169,7 @@ protected void setUp() {
          System.out.println();
       }
    }
-
+*/
    public void testValidator202() {
        String[] schemes = {"http","https"};
        UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.NO_FRAGMENTS);
