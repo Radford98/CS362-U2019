@@ -16,7 +16,10 @@
  */
 
 import junit.framework.TestCase;
-import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Performs Validation Test for url validations.
