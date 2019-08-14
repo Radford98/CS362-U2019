@@ -42,12 +42,6 @@ protected void setUp() {
       }
    }
 
-    public void testUnitIsValid(){
-        UrlValidator validator = new UrlValidator();
-
-        assertTrue(validator.isValid("http://www.apache.org/test/index.html"));
-    }
-
     public void testRandomIsValid(){
         String url;             // For constructing a url
         ResultPair urlPiece;    // Pieces of a url and if they're valid
