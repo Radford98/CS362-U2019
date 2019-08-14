@@ -46,7 +46,52 @@ protected void setUp() {
     }
 
     public void testRandomIsValid(){
-        // Insert Function Here
+        String url;             // For constructing a url
+        ResultPair urlPiece;    // Pieces of a url and if they're valid
+        boolean expected;       // Track if the overall url is valid
+        boolean valid;
+        UrlValidator Validator = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+
+        for (int i = 0; i < 5000; i++){
+            // Reset url and valid for each test
+            url = "";
+            expected = true;
+
+            // Add Scheme
+            urlPiece = testUrlScheme[(int)(Math.random()*8)];   // Choose a random scheme from 0-7
+            url += urlPiece.item;
+            expected &= urlPiece.valid;
+
+            // Add authority
+            urlPiece = testUrlAuthority[(int)(Math.random()*20)];
+            url += urlPiece.item;
+            expected &= urlPiece.valid;
+
+            // Add port
+            urlPiece = testUrlPort[(int)(Math.random()*9)];
+            url += urlPiece.item;
+            expected &= urlPiece.valid;
+
+            // Add path
+            urlPiece = testPath[(int)(Math.random()*10)];
+            url += urlPiece.item;
+            expected &= urlPiece.valid;
+
+            // Add query
+            urlPiece = testUrlQuery[(int)(Math.random()*3)];
+            url += urlPiece.item;
+            expected &= urlPiece.valid;
+
+            valid = Validator.isValid(url);
+
+            // If statement to set up breakpoint to look in the isValid function
+            if (valid != expected){
+                valid = Validator.isValid(url);
+            }
+            assertEquals(url, expected, valid);
+
+        }
+
     }
 
    public void testIsValid() {
