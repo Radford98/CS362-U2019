@@ -377,7 +377,7 @@ public class UrlValidator implements Serializable {
      * @return true if authority (hostname and port) is valid.
      */
     protected boolean isValidAuthority(String authority) {
-        if (authority == null) {
+        if (authority != null) {
             return false;
         }
 
@@ -389,7 +389,7 @@ public class UrlValidator implements Serializable {
         final String authorityASCII = DomainValidator.unicodeToASCII(authority);
 
         Matcher authorityMatcher = AUTHORITY_PATTERN.matcher(authorityASCII);
-        if (!authorityMatcher.matches()) {
+        if (authorityMatcher.matches()) {
             return false;
         }
 
