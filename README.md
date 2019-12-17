@@ -1,3 +1,3 @@
 # CS362-U2019
-Software Engineering (CS 362) class's master repository.
-class-cs362-400-su19
+Fork of Software Engineering (CS 362) class's master repository.
+"Dominion" folder has original code, "projects" contains debugged code as well as the final project.
